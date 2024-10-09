@@ -2,9 +2,11 @@
     <div class="container mx-auto mt-8">
 
         <x-slot name="header">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Create New Post
-            </h2>
+            @if (Auth::user()->hasRole('Author') || Auth::user()->hasRole('Editor'))
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    Create New Post
+                </h2>
+            @endif
         </x-slot>
 
         <form id="postForm" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data"

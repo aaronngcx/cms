@@ -88,7 +88,7 @@ class PostController extends Controller
 
             return redirect()->route('posts.index')->with('success', 'Post created successfully');
         } catch (\Exception $e) {
-            \Log::error('Post creation failed: ' . $e->getMessage());
+            Log::error('Post creation failed: ' . $e->getMessage());
             return redirect()->back()->withInput()->withErrors(['error' => 'Post creation failed, please try again.']);
         }
     }
@@ -107,10 +107,6 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        if (Auth::user()->id !== $post->created_by && !Auth::user()->hasRole('Admin')) {
-            abort(403, 'Unauthorized action.');
-        }
-
         return view('posts.edit', compact('post'));
     }
 
@@ -220,7 +216,7 @@ class PostController extends Controller
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => "Generate SEO metadata for the following blog post outline:\n\nOutline:\n{$outline}\n\nPlease return the results in the following format:\n\nMeta Title:\n[Your Meta Title Here]\n\nMeta Description:\n[Your Meta Description Here]\n\nKeywords:\n[Your Keywords Here]"
+                    'content' => "Generate SEO metadata for the following blog post outline:\n\nOutline:\n{$outline}\n\nPlease return the results in the following format:\n\nMeta Title:\n[Your Meta Title Here]\n\nMeta Description:\n[Your Meta Description Here]\n\nKeywords:\n[Your Keywords Here]\n\n(Note: Please ensure that each item is under 160 characters.)"
                 ]
             ],
             'max_tokens' => 1000

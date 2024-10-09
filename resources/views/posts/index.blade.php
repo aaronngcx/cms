@@ -8,10 +8,12 @@
     <div class="container mx-auto mt-8">
         <div class="flex justify-between mb-4">
             <h2 class="text-2xl font-bold">Post List</h2>
-            <a href="{{ route('posts.create') }}"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Create New Post
-            </a>
+            @if (Auth::user()->hasRole('Author') || Auth::user()->hasRole('Editor'))
+                <a href="{{ route('posts.create') }}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Create New Post
+                </a>
+            @endif
         </div>
 
         {{-- Display success or error messages --}}
@@ -35,18 +37,24 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Title
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Description
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                        </th>
+                        @if (Auth::user()->hasRole('Author') || Auth::user()->hasRole('Editor'))
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -59,27 +67,25 @@
                                 {{ Str::limit($post->description, 50) }} {{-- Display a limited description --}}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{-- <span class="inline-block bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                                    {{ ucfirst($post->status) }}
-                                </span> --}}
-
-                                <span class="
+                                <span
+                                    class="
                                     inline-block text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full
                                     @if ($post->status == 'published') bg-green-100 text-green-800
                                     @elseif ($post->status == 'pending') bg-yellow-100 text-yellow-800
-                                    @elseif ($post->status == 'draft') bg-gray-100 text-gray-800
-                                    @endif
+                                    @elseif ($post->status == 'draft') bg-gray-100 text-gray-800 @endif
                                 ">
                                     {{ ucfirst($post->status) }}
                                 </span>
 
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                @if (Auth::user()->canEdit())
-                                    <button class="text-red-600 hover:text-red-900 delete-post" data-id="{{ $post->id }}" data-title="{{ $post->title }}">
+                                @if (Auth::user()->hasRole('Author') || Auth::user()->hasRole('Editor'))
+                                    <button class="text-red-600 hover:text-red-900 delete-post"
+                                        data-id="{{ $post->id }}" data-title="{{ $post->title }}">
                                         Delete
                                     </button>
-                                    <a href="{{ route('posts.edit', $post->id) }}" class="text-blue-600 hover:text-blue-900 ml-2">Edit</a>
+                                    <a href="{{ route('posts.edit', $post->id) }}"
+                                        class="text-blue-600 hover:text-blue-900 ml-2">Edit</a>
                                 @endif
                             </td>
                         </tr>
@@ -108,10 +114,10 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             let deleteFormAction = '';
 
-            $('.delete-post').on('click', function () {
+            $('.delete-post').on('click', function() {
                 const postId = $(this).data('id');
                 const title = $(this).data('title');
 
@@ -126,7 +132,7 @@
                 console.log(deleteFormAction);
             });
 
-            $('#confirmDelete').on('click', function () {
+            $('#confirmDelete').on('click', function() {
                 // Create a form to submit the delete request
                 const form = $('<form>', {
                     method: 'POST',
@@ -142,7 +148,7 @@
                 form.submit();
             });
 
-            $('#cancelDelete').on('click', function () {
+            $('#cancelDelete').on('click', function() {
                 // Hide the modal
                 $('#deleteModal').addClass('hidden');
             });

@@ -10,7 +10,7 @@ class DashboardController extends Controller
     {
         $posts = Post::where('status', 'published')
             ->where('published_at', '>=', now())
-            ->paginate(10);
+            ->get();
 
         return view('dashboard', compact('posts'));
     }
