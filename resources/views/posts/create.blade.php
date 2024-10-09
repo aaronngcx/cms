@@ -177,9 +177,11 @@
                         description: description,
                         _token: csrfToken
                     };
+                    var url = '{{ url('/posts/generate-outline') }}';
+                    console.log(url);
 
                     $.ajax({
-                        url: '{{ url('/posts/generate-outline') }}',
+                        url: url,
                         type: 'POST',
                         data: data,
                         success: function(response) {
