@@ -123,4 +123,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'aliases' => [
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Route' => Illuminate\Support\Facades\Route::class,
+        'Str' => Illuminate\Support\Str::class,
+        'Auth' => Illuminate\Support\Facades\Auth::class,
+
+    ],
+
 ];

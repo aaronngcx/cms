@@ -18,14 +18,20 @@
 
                     <!-- Dashboard Statistics Section -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-blue-100 p-4 rounded-lg shadow">
-                            <h4 class="font-medium text-blue-800">Total Posts</h4>
-                            <p class="text-2xl">{{ $posts->count() }}</p>
+                        <div class="bg-blue-100 p-4 rounded-lg shadow transition duration-200 hover:bg-blue-200">
+                            <a href="{{ route('posts.index') }}" class="block">
+                                <h4 class="font-medium text-blue-800">Total Posts</h4>
+                                <p class="text-2xl">{{ $posts->count() }}</p>
+                            </a>
                         </div>
-                        <div class="bg-green-100 p-4 rounded-lg shadow">
-                            <h4 class="font-medium text-green-800">Published Posts</h4>
-                            <p class="text-2xl">{{ $posts->where('status', 'published')->count() }}</p>
+                        
+                        <div class="bg-green-100 p-4 rounded-lg shadow transition duration-200 hover:bg-green-200">
+                            <a href="{{ route('posts.published') }}" class="flex flex-col">
+                                <h4 class="font-medium text-green-800">Published Posts</h4>
+                                <p class="text-2xl">{{ $posts->where('status', 'published')->count() }}</p>
+                            </a>
                         </div>
+                        
                         <div class="bg-yellow-100 p-4 rounded-lg shadow">
                             <h4 class="font-medium text-yellow-800">Drafts</h4>
                             <p class="text-2xl">{{ $posts->where('status', 'draft')->count() }}</p>
@@ -33,7 +39,8 @@
                     </div>
 
                     <!-- Include the Posts Index Section -->
-                    @include('posts.index', ['posts' => $posts])
+                    {{-- @include('posts.index', ['posts' => $posts]) --}}
+                    <x-post-list :posts="$posts->take(10)" />
                 </div>
             </div>
         </div>

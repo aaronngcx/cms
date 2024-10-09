@@ -8,10 +8,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
-        $posts = Post::paginate(10);
-        
+        $posts = Post::where('status', 'published')
+            ->where('published_at', '>=', now())
+            ->paginate(10);
+
         return view('dashboard', compact('posts'));
     }
 }
-

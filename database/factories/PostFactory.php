@@ -15,9 +15,8 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
-            'outline' => $this->faker->paragraph(),
+            'content' => $this->faker->paragraph(),
             'status' => $this->faker->randomElement(['draft', 'pending', 'published']),
-            'media' => json_encode([$this->faker->imageUrl(), $this->faker->imageUrl()]),
             'published_at' => $this->faker->dateTimeBetween('now', '+1 month'),
             'meta_title' => $this->faker->sentence(),
             'meta_description' => $this->faker->sentence(),

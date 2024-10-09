@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -53,5 +54,32 @@ class User extends Authenticatable
     public function hasRole($roleName)
     {
         return $this->roles()->first()->name === $roleName;
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('Admin');
+    }
+
+    public function isEditor()
+    {
+        return $this->hasRole('Editor');
+    }
+
+    public function isAuthor()
+    {
+        return $this->hasRole('Author');
+    }
+
+    public function canEdit()
+    {
+        $user = Auth::user();
+        
+        return $user && (
+            $user->id == $this->created_by || 
+            $user->hasRole('Admin') || 
+            $user->hasRole('Editor') ||
+            $user->hasRole('Author')
+        );
     }
 }

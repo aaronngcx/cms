@@ -15,13 +15,12 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->longText('outline');
+            $table->longText('content');
             $table->string('status')->default('draft');
-            $table->json('media')->nullable();
-            $table->timestamp('published_at')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
             $table->string('keywords')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

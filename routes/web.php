@@ -3,18 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GoogleAuthController;
 
 // Public Routes
 Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
+
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
 
-    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware('verified')
         ->name('dashboard');
@@ -41,10 +45,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('posts.index');
         Route::post('/', [PostController::class, 'store'])->name('posts.store');
         Route::get('/create', [PostController::class, 'create'])->name('posts.create');
+        Route::get('posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::put('posts/{post}', [PostController::class, 'update'])->name('posts.update');
         Route::post('/generate-outline', [PostController::class, 'generateOutline'])->name('posts.generate-outline');
-        Route::post('/generate-seo', [PostController::class, 'generateSEO'])->name('posts.generate-seo');
+        Route::post('/generate-meta-tags', [PostController::class, 'generateMetaTags'])->name('posts.generate-seo');
         Route::delete('{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+        Route::get('/posts/published', [PostController::class, 'published'])->name('posts.published');
+
     });
+
+    Route::delete('/media/{id}', [MediaController::class, 'destroy']);
+
 });
 
 // Load authentication routes

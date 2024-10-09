@@ -16,12 +16,11 @@ class Post extends Model
     protected $fillable = [
         'title',
         'description',
-        'outline',
+        'content',
         'status',
         'meta_title',
         'meta_description',
         'keywords',
-        'media',
         'published_at',
         'created_by'
     ];
@@ -37,5 +36,10 @@ class Post extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function media()
+    {
+        return $this->hasMany(Media::class);
     }
 }
