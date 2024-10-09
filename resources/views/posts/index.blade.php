@@ -20,14 +20,17 @@
                             </span>
                         </div>
                     </div>
-                    <div class="flex justify-between p-4 border-t">
-                        <button class="text-red-600 hover:text-red-900 font-medium delete-post" data-id="{{ $post->id }}" data-title="{{ $post->title }}">Delete</button>
-                    </div>
+
+                    @if (Auth::check() && (Auth::user()->id == $post->created_by || Auth::user()->hasRole('Admin')))
+                        <div class="flex justify-between p-4 border-t">
+                            <button class="text-red-600 hover:text-red-900 font-medium delete-post" data-id="{{ $post->id }}" data-title="{{ $post->title }}">Delete</button>
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
 
-        {{-- Pagination Links --}}
+        <!-- Pagination Links -->
         <div class="mt-6">
             {{ $posts->links() }}
         </div>

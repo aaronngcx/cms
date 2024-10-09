@@ -1,9 +1,11 @@
-@extends('layouts.app')
+<x-app-layout>
+    <div class="container mx-auto mt-8">
 
-@section('content')
-    <div class="container mx-auto mt-8"> 
-
-        <h2 class="text-2xl font-bold mb-4">Create New Post</h2>
+        <x-slot name="header">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Create New Post
+            </h2>
+        </x-slot>
 
         <form id="postForm" action="{{ route('posts.store') }}" method="POST"
             class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -34,7 +36,7 @@
                 </label>
                 <textarea name="outline" id="outline" rows="5"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                    <div id="outline-status" class="text-gray-600 mb-2" style="display: none;"></div>
+                <div id="outline-status" class="text-gray-600 mb-2" style="display: none;"></div>
 
             </div>
 
@@ -186,4 +188,4 @@
 
         });
     </script>
-@endsection
+</x-app-layout>
