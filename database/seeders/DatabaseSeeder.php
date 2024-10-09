@@ -3,21 +3,40 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Post;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $roles = [
+            ['name' => 'Admin'],
+            ['name' => 'Editor'],
+            ['name' => 'Author'],
+            // Add more roles as needed
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role['name']]);
+        }
+
+        User::factory(1)->create()->each(function ($user) {
+            $roles = Role::all()->random(rand(1, 3));
+            $user->roles()->attach($roles);
+        });
+
+        $admin = User::where('name', 'Admin')->first();
+        if (!$admin) {
+            User::factory()->create([
+                'name' => 'Admin',
+                'email' => 'admin@mail.com',
+                'password' => bcrypt('password'),
+            ]);
+        }
+
+        // Create random posts
+        Post::factory()->count(5)->create();
     }
 }
