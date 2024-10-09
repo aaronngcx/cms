@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Role;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
+class RoleSeeder extends Seeder
 {
     /**
      * Run the migrations.
